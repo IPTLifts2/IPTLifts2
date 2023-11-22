@@ -1,0 +1,704 @@
+Set low = 0
+Set high = 11
+<Globals>
+Designer = SBCReloadedV5
+Description = Made in NothingCanStopMe357's Skyscrapersim Building Creator V2 on 22 November 2023 by user BakingPowderAlpha
+CameraPosition = 54, -96
+<EndGlobals>
+<Function CreateStairs> #1. number, 2. start floor, 3. end floor, 4. X position, 5. Z position, 6. direction
+if[%param6% = left] Set other = right
+if[%param6% = right] Set other = left
+if[%param6% = front] Set other = back
+if[%param6% = back] Set other = front
+Set LENGTH = 8.5
+Set WIDTH = 3.5
+if[%other% = left | %other% = right] Set WIDTH = 8.5
+if[%other% = left | %other% = right] Set LENGTH = 3.5
+Set opendir = 1
+if[%param6% = right] Set opendir = 3
+if[%param6% = front] Set opendir = 5
+if[%param6% = back] Set opendir = 7
+CreateStairwell %param1%, %param4%, %param5%, %param2%, %param3%
+CutStairwell %param1%, -%WIDTH%, -%LENGTH%, %WIDTH%, %LENGTH%, 0, 5
+Cut Landscape, %param4%-%WIDTH%, -2, %param5%-%LENGTH%, %param4%+%WIDTH%, 2, %param5%+%LENGTH%, true, true
+Set XA = 0
+if[%param6% = front] Set XA = -1.75
+if[%param6% = back] Set XA = 1.75
+Set XB = 0 - %XA%
+Set ZA = 0
+if[%param6% = left] Set ZA = -1.75
+if[%param6% = right] Set ZA = 1.75
+Set ZB = 0 - %ZA%
+Set A = %WIDTH%
+if[%param6% = right] Set A = -5
+Set B = %LENGTH%
+if[%param6% = back] Set B = -5
+Set C = %WIDTH%
+if[%param6% = left] Set C = -5
+Set D = %LENGTH%
+if[%param6% = front] Set D = -5
+Set LX1 = 5
+if[%param6% = front | %param6% = back] Set LX1 = %WIDTH%
+if[%param6% = front | %param6% = left] Set LX1 = 0-%LX1%
+Set LY1 = 5
+if[%param6% = left | %param6% = right] Set LY1 = %LENGTH%
+if[%param6% = left | %param6% = front] Set LY1 = 0-%LY1%
+Set LX2 = 0
+if[%other% = left | %other% = right] Set LX2 = %LX1%
+Set LY2 = 0
+if[%other% = front | %other% = back] Set LY2 = %LY1%
+Set CX = 0
+if[%param6% = left] Set CX = -%WIDTH%
+if[%param6% = right] Set CX = %WIDTH%
+Set CZ = 0
+if[%param6% = front] Set CZ = -%LENGTH%
+if[%param6% = back] Set CZ = %LENGTH%
+<Floors %param2% to %param3%>
+CutAll %param4%-%WIDTH%, -2, %param5%-%LENGTH%, %param4%+%WIDTH%, %fullheight% + %interfloorheight%, %param5%+%LENGTH%, true, false
+Set 1 = (%height% + %interfloorheight%) / 20
+if[%floor% < %param3%] AddStairs %param1%, StairsLower, Stairs, %param6%, %XA%, %ZA%, 3.5, %1%, 10/9, 10, 0, 0, 0
+if[%floor% < %param3%] AddStairs %param1%, StairsUpper, Stairs, %other%, %XB%, %ZB%, 3.5, %1%, 10/9, 10, %1% * 10, 0, 0
+FloorOrientation = top
+if[%floor% > %param2%] AddStairsFloor %param1%, LandingLower, Brick, 0.5, 0-%A%, 0-%B%, %C%, %D%, 0, 0, false, false, 1, 1
+if[%floor% = %param2%] AddStairsFloor %param1%, LandingLower, Brick, 0.5, 0-%WIDTH%, 0-%LENGTH%, %WIDTH%, %LENGTH%, 0, 0, false, false, 1, 1
+if[%floor% < %param3%] AddStairsFloor %param1%, LandingUpper, Brick, 0.5, 0-%C%, 0-%D%, %A%, %B%, %1% * 10, %1% * 10, false, false, 1, 1
+if[%floor% = %param3%] AddStairsFloor %param1%, Ceiling, Floor1Lit, 0.5, 0-%WIDTH%, 0-%LENGTH%, %WIDTH%, %LENGTH%, %height%, %height%, false, false, 1, 1
+DrawWalls = false, true, false, false, false, false
+WallOrientation = right
+AddStairsWall %param1%, LandingLowerCover, Brick, .1, %LX1%, %LY1%, %LX2%, %LY2%, .5, .5, -.5, -.5, 0, 1
+DrawWalls = true, false, false, false, false, false
+WallOrientation = left
+if[%floor% < %param3%] AddStairsWall %param1%, LandingUpperCover, Brick, .1, 0-%LX2%, 0-%LY2%, 0-%LX1%, 0-%LY1%, .5, .5, (%1% * 10) -.5, (%1% * 10) -.5, 0, 1
+DrawWalls = true, true, false, false, false, false
+SetAutoSize = true, false
+AddStairsWall %param1%, RightWall, Wall1, 0.3, %WIDTH%, -%LENGTH% - 0.3, %WIDTH%, %LENGTH% + 0.3, %fullheight%, %fullheight%, -%interfloorheight%, -%interfloorheight%, 0, 3
+AddStairsWall %param1%, BackWall, Wall1, 0.3, -%WIDTH% - 0.3, %LENGTH%, %WIDTH% + 0.3, %LENGTH%, %fullheight%, %fullheight%, -%interfloorheight%, -%interfloorheight%, 0, 3
+WallOrientation = right
+AddStairsWall %param1%, LeftWall, Wall1, 0.3, -%WIDTH%, -0.3 -%LENGTH%, -%WIDTH%, %LENGTH% + 0.3, %fullheight%, %fullheight%, -%interfloorheight%, -%interfloorheight%, 0, 3
+AddStairsWall %param1%, FrontWall, Wall1, 0.3, -%WIDTH% - 0.3, -%LENGTH%, %WIDTH% + 0.3, -%LENGTH%, %fullheight%, %fullheight%, -%interfloorheight%, -%interfloorheight%, 0, 3
+SetAutoSize = true, true
+AddStairsDoor %param1%, , , False, StairsDoor, 0.2, %opendir%, 0, %CX%, %CZ%, 3.5, 8, 0, 1, 1
+<EndFloors>
+<EndFunction>
+<Function BuildAtrium> #parameters: 1. wall height, 2. start X, 3. start Z, 4. end X, 5. end Z, 6. texture group number, 7. thickness
+DrawWalls = true, true, true, true, true, true
+CutAll %param2%, -1 - %interfloorheight%, %param3%, %param4%, %interfloorheight% + 2, %param5%, true, true
+WallOrientation = right
+AddWall AF, Wall%param6%, %param7%, %param2%, %param3%, %param4%, %param3%, %param1%, %param1%, -%param7%, -%param7%, 0, 0, True
+AddWall AL, Wall%param6%, %param7%, %param2%, %param5%, %param2%, %param3%, %param1%, %param1%, -%param7%, -%param7%, 0, 0, True
+WallOrientation = left
+AddWall AR, Wall%param6%, %param7%, %param4%, %param3%, %param4%, %param5%, %param1%, %param1%, -%param7%, -%param7%, 0, 0, True
+AddWall AB, Wall%param6%, %param7%, %param4%, %param5%, %param2%, %param5%, %param1%, %param1%, -%param7%, -%param7%, 0, 0, True
+WallOrientation = center
+<EndFunction>
+<Function BuildRoom> #parameters: 1. start X, 2. start Z, 3. end X, 4. end Z, 5. floor tex, 6. thickness, 7. window tex
+WallOrientation = center
+CutAll %param1%, 0, %param2%, %param3%, %height%, %param4%, true, true
+DrawWalls = false, true, true, true, true, true
+AddFloor Floor%param5%, Floor%param5%, %param6%, %param1%, %param2%, %param3%, %param4%, 0, 0, 0, 0, False
+DrawWalls = true, false, true, true, true, true
+AddFloor Ceiling%param5%, Floor%param5%Lit, %param6%, %param1%, %param2%, %param3%, %param4%, %height% - 0.05, %height% - 0.05, 0, 0, False
+AddFloor Bottom%param5%, Brick, %param6%, %param1%, %param2%, %param3%, %param4%, -0.05, -0.05, 0, 0, False
+SetAutoSize = true, false
+DrawWalls = true, false, false, false, false, false
+AddWall Front, Win%param7%, %param6%, %param1%, %param2%, %param3%, %param2%, %height%, %height%, %interfloorheight%, %interfloorheight%, 0, 0, True
+AddWall Left, Win%param7%, %param6%, %param1%, %param4%, %param1%, %param2%, %height%, %height%, %interfloorheight%, %interfloorheight%, 0, 0, True
+DrawWalls = false, true, false, false, false, false
+AddWall Right, Win%param7%, %param6%, %param3%, %param2%, %param3%, %param4%, %height%, %height%, %interfloorheight%, %interfloorheight%, 0, 0, True
+AddWall Back, Win%param7%, %param6%, %param3%, %param4%, %param1%, %param4%, %height%, %height%, %interfloorheight%, %interfloorheight%, 0, 0, True
+DrawWalls = false, true, false, false, false, false
+AddWall Front, Win%param7%Lit, %param6%, %param1%, %param2%, %param3%, %param2%, %height%, %height%, 0, 0, 0, 0, False
+AddWall Left, Win%param7%Lit, %param6%, %param1%, %param4%, %param1%, %param2%, %height%, %height%, 0, 0, 0, 0, False
+DrawWalls = true, false, false, false, false, false
+AddWall Right, Win%param7%Lit, %param6%, %param3%, %param2%, %param3%, %param4%, %height%, %height%, 0, 0, 0, 0, False
+AddWall Back, Win%param7%Lit, %param6%, %param3%, %param4%, %param1%, %param4%, %height%, %height%, 0, 0, 0, 0, False
+SetAutoSize = true, true
+FloorOrientation = bottom
+DrawWalls = false, true, false, false, false, false
+AddInterfloorFloor IFloor, Brick, %param6%, %param1%, %param2%, %param3%, %param4%, %fullheight%, %fullheight%, 0, 0
+WallOrientation = left
+AddInterfloorWall IFront, Brick, %param6%, %param1%, %param2%, %param3%, %param2%, %interfloorheight%, %interfloorheight%, %fullheight%, %fullheight%, 0, 0
+AddInterfloorWall ILeft, Brick, %param6%, %param1%, %param4%, %param1%, %param2%, %interfloorheight%, %interfloorheight%, %fullheight%, %fullheight%, 0, 0
+AddWall Right, BrickLit, %param6%, %param3%, %param2%, %param3%, %param4%, %interfloorheight%, %interfloorheight%, %fullheight%, %fullheight%, 0, 0, True
+AddWall Back, BrickLit, %param6%, %param3%, %param4%, %param1%, %param4%, %interfloorheight%, %interfloorheight%, %fullheight%, %fullheight%, 0, 0, True
+WallOrientation = right
+DrawWalls = true, false, false, false, false, false
+AddInterfloorWall IRight, Brick, %param6%, %param3%, %param2%, %param3%, %param4%, %interfloorheight%, %interfloorheight%, %fullheight%, %fullheight%, 0, 0
+AddInterfloorWall IBack, Brick, %param6%, %param3%, %param4%, %param1%, %param4%, %interfloorheight%, %interfloorheight%, %fullheight%, %fullheight%, 0, 0
+AddWall Front, BrickLit, %param6%, %param1%, %param2%, %param3%, %param2%, %interfloorheight%, %interfloorheight%, %fullheight%, %fullheight%, 0, 0, True
+AddWall Left, BrickLit, %param6%, %param1%, %param4%, %param1%, %param2%, %interfloorheight%, %interfloorheight%, %fullheight%, %fullheight%, 0, 0, True
+FloorOrientation = top
+DrawWalls = true, true, false, false, false, false
+AddInterfloorFloor ITop, Brick, %param6%, %param1%, %param2%, %param3%, %param4%, %fullheight% - 0.05, %fullheight% - 0.05, 0, 0
+<EndFunction>
+<Function CreateShaft> #parameters: 1. shaft no., 2. start flr, 3. end flr, 4. texture group number, 5. center X, 6. center Z, 7. thickness, 8. width, 9. length, 10. N, 11. S, 12. E, 13. W
+AddShaft %param1%, 2, %param5%, %param6%, %param2%, %param3%
+ShaftCut %param1%, (%param7%)-(%param8%/2), (%param7%)-(%param9%/2), (%param8%/2)-(%param7%), (%param9%/2)-(%param7%), 0, 5
+Cut Landscape, %param5%+(%param7%)-(%param8%/2), -1, %param6%+(%param7%)-(%param9%/2), %param5%+(%param8%/2)-(%param7%), 1, %param6%+(%param9%/2)-(%param7%), true, true
+<Floors %param2% to %param3%>
+SetAutoSize = true, true
+CutAll %param5%+(%param7%)-(%param8%/2), -1, %param6%+(%param7%)-(%param9%/2), %param5%+(%param8%/2)-(%param7%), %fullheight% + %interfloorheight%, %param6%+(%param9%/2)-(%param7%), true, true
+FloorOrientation = top
+WallOrientation = left
+DrawWalls = false, true, true, true, false, false
+if[%floor% = %param2%] AddShaftFloor %param1%, Shaft%param1%Base, Brick, 0.5, 0 - (%param8% / 2), 0 - (%param9% / 2), (%param8% / 2), (%param9% / 2), 0, 0, 0, 0
+if[%param12% ! 1] AddWall Shaft%param1%RightE, Wall%param4%, %param7%, %param5% + (%param8%/2), %param6% - (%param9%/2) - (%param7%), %param5% + (%param8%/2), %param6% + (%param9%/2) + (%param7%), %fullheight%, %fullheight%, -%interfloorheight%, -%interfloorheight%, 0, 0, False
+if[%param12% = 1] AddWall Shaft%param1%RightE, Wall5, %param7%, %param5% + (%param8%/2), %param6% - (%param9%/2) - (%param7%), %param5% + (%param8%/2), %param6% + (%param9%/2) + (%param7%), %fullheight%, %fullheight%, -%interfloorheight%, -%interfloorheight%, 0, 0, False
+if[%param10% ! 1] AddWall Shaft%param1%BackE, Wall%param4%, %param7%, %param5% + (%param8%/2) + (%param7%), %param6% + (%param9%/2), %param5% - (%param8%/2) - (%param7%), %param6% + (%param9%/2), %fullheight%, %fullheight%, -%interfloorheight%, -%interfloorheight%, 0, 0, False
+if[%param10% = 1] AddWall Shaft%param1%BackE, Wall5, %param7%, %param5% + (%param8%/2) + (%param7%), %param6% + (%param9%/2), %param5% - (%param8%/2) - (%param7%), %param6% + (%param9%/2), %fullheight%, %fullheight%, -%interfloorheight%, -%interfloorheight%, 0, 0, False
+DrawWalls = true, true, true, true, false, false
+if[%param13% ! 1] AddShaftWall %param1%, Shaft%param1%Left, Brick, %param7%, 0 - (%param8% / 2), 0 - (%param9% / 2), 0 - (%param8% / 2), (%param9% / 2), %fullheight%, %fullheight%, 0, 0, 0, 0
+if[%param13% = 1] AddShaftWall %param1%, Shaft%param1%Left, Wall5, %param7%, 0 - (%param8% / 2), 0 - (%param9% / 2), 0 - (%param8% / 2), (%param9% / 2), %fullheight%, %fullheight%, 0, 0, 0, 0
+if[%param11% ! 1] AddShaftWall %param1%, Shaft%param1%Front, Brick, %param7%, 0 - (%param8% / 2), 0 - (%param9% / 2), (%param8% / 2), 0 - (%param9% / 2), %fullheight%, %fullheight%, 0, 0, 0, 0
+if[%param11% = 1] AddShaftWall %param1%, Shaft%param1%Front, Wall5, %param7%, 0 - (%param8% / 2), 0 - (%param9% / 2), (%param8% / 2), 0 - (%param9% / 2), %fullheight%, %fullheight%, 0, 0, 0, 0
+WallOrientation = right
+if[%param12% ! 1] AddShaftWall %param1%, Shaft%param1%Right, Brick, %param7%, (%param8% / 2), 0 - (%param9% / 2), (%param8% / 2), (%param9% / 2), %fullheight%, %fullheight%, 0, 0, 0, 0
+if[%param12% = 1] AddShaftWall %param1%, Shaft%param1%Right, Wall5, %param7%, (%param8% / 2), 0 - (%param9% / 2), (%param8% / 2), (%param9% / 2), %fullheight%, %fullheight%, 0, 0, 0, 0
+if[%param10% ! 1] AddShaftWall %param1%, Shaft%param1%Back, Brick, %param7%, 0 - (%param8% / 2), (%param9% / 2), (%param8% / 2), (%param9% / 2), %fullheight%, %fullheight%, 0, 0, 0, 0
+if[%param10% = 1] AddShaftWall %param1%, Shaft%param1%Back, Wall5, %param7%, 0 - (%param8% / 2), (%param9% / 2), (%param8% / 2), (%param9% / 2), %fullheight%, %fullheight%, 0, 0, 0, 0
+DrawWalls = true, false, true, true, false, false
+if[%floor% = %param3%] AddShaftFloor %param1%, Shaft%param1%Top, Brick, 0.5, 0 - (%param8% / 2), 0 - (%param9% / 2), (%param8% / 2), (%param9% / 2), %fullheight%, %fullheight%, 0, 0
+if[%param13% ! 1] AddWall Shaft%param1%LeftE, Wall%param4%, %param7%, %param5% - (%param8%/2), %param6% + (%param9%/2) + (%param7%), %param5% - (%param8%/2), %param6% - (%param9%/2) - (%param7%), %fullheight%, %fullheight%, -%interfloorheight%, -%interfloorheight%, 0, 0, False
+if[%param13% = 1] AddWall Shaft%param1%LeftE, Wall5, %param7%, %param5% - (%param8%/2), %param6% + (%param9%/2) + (%param7%), %param5% - (%param8%/2), %param6% - (%param9%/2) - (%param7%), %fullheight%, %fullheight%, -%interfloorheight%, -%interfloorheight%, 0, 0, False
+if[%param11% ! 1] AddWall Shaft%param1%FrontE, Wall%param4%, %param7%, %param5% - (%param8%/2) - (%param7%), %param6% - (%param9%/2), %param5% + (%param8%/2) + (%param7%), %param6% - (%param9%/2), %fullheight%, %fullheight%, -%interfloorheight%, -%interfloorheight%, 0, 0, False
+if[%param11% = 1] AddWall Shaft%param1%FrontE, Wall5, %param7%, %param5% - (%param8%/2) - (%param7%), %param6% - (%param9%/2), %param5% + (%param8%/2) + (%param7%), %param6% - (%param9%/2), %fullheight%, %fullheight%, -%interfloorheight%, -%interfloorheight%, 0, 0, False
+<EndFloors>
+DrawWalls = true, true, false, false, false, false
+<EndFunction>
+<Function CreateDoorPanel>#parameters: 1. x, 2. z, 3. w, 4. l, 5. h, 6. texture, 7. door width /2
+if[%param3% > 0]AddWall Left Panel, %param6%, 0.7, %param1% - (%param3%/2), %param2%, %param1% - %param7%, %param2%, %param5%, %param5%, 0, 0, 0, 0
+if[%param3% > 0]AddWall Right Panel, %param6%, 0.7, %param1% + %param7%, %param2%, %param1% + (%param3%/2), %param2%, %param5%, %param5%, 0, 0, 0, 0
+if[%param4% > 0]AddWall Left Panel, %param6%, 0.7, %param1%, %param2% - (%param4%/2), %param1%, %param2% - %param7%, %param5%, %param5%, 0, 0, 0, 0
+if[%param4% > 0]AddWall Right Panel, %param6%, 0.7, %param1%, %param2% + %param7%, %param1%, %param2% + (%param4%/2), %param5%, %param5%, 0, 0, 0, 0
+<EndFunction>
+<Function Elevator_Create> #parameters: 1. center X, 2. center Z, 3. start flr, 4. width, 5. length, 6. height, 7. shaft, 8. thickness, 9. texture, 10. speed, 11. N, 12. S, 13. E, 14. W, 15. doors, 16. backWallTex
+Doors = %param15%
+Speed = 8
+Acceleration = 0.08
+Deceleration = 0.08
+AssignedShaft = %param7%
+FloorSkipText =EZ
+CreateElevator true, %param1%, %param2%, %param3%
+FloorOrientation = top
+DrawWalls = true, true, true, true, true, true
+SetAutoSize = false, false
+TextureOverride ElevExt, %param9%Floor, ElevExt, ElevExt, ElevExt, ElevExt
+AddFloor Floor, %param9%Floor, %param8%, -.2-(%param4%/2), -.2-(%param5%/2), .2+(%param4%/2), .2+(%param5%/2), 0, 0, 0, 0
+FloorOrientation = bottom
+TextureOverride %param9%Ceiling, ElevExt, ElevExt, ElevExt, ElevExt, ElevExt
+AddFloor Ceiling, %param9%Ceiling, %param8%, -.2-(%param4%/2), -.2-(%param5%/2), .2+(%param4%/2), .2+(%param5%/2), %param6%, %param6%, 0, 0 #ceiling   
+WallOrientation = right
+if[%param11% = 0] AddWall Back, %param16%, %param8%, -.2 -(%param4%/2), (%param5%/2), .2 + (%param4%/2), (%param5%/2), %param6%, %param6%, 0, 0, 0, 0 #back wall
+if[%param11% = 1] TextureOverride %param9%MainPanel, ElevExt, ElevExt, ElevExt, ElevExt, ElevExt
+if[%param11% = 1] CreateDoorPanel(0, %param5%/2 + .2, %param4%, 0, %param6%, %param9%MainPanel, 1.75)
+if[%param13% = 0] AddWall Right, %param16%, %param8%, (%param4%/2), -.2 -(%param5%/2), (%param4%/2), .2 + (%param5%/2), %param6%, %param6%, 0, 0, 0, 0 #right wall
+if[%param13% = 1] TextureOverride %param9%MainPanel, ElevExt, ElevExt, ElevExt, ElevExt, ElevExt
+if[%param13% = 1] CreateDoorPanel(%param4%/2 + .2, 0, 0, %param5%, %param6%, %param9%MainPanel, 1.75)
+WallOrientation = left
+if[%param14% = 0] AddWall Left, %param16%, %param8%, 0 -(%param4%/2), -.2 -(%param5%/2), 0 -(%param4%/2), .2 + (%param5%/2), %param6%, %param6%, 0, 0, 0, 0 #left wall
+if[%param14% = 1] TextureOverride ElevExt, %param9%MainPanel, ElevExt, ElevExt, ElevExt, ElevExt
+if[%param14% = 1] CreateDoorPanel(-%param4%/2 - .2, 0, 0, %param5%, %param6%, %param9%MainPanel, 1.75)
+if[%param12% = 0] AddWall Front, %param16%, %param8%, .2 + (%param4%/2), 0 - (%param5%/2), -.2 - (%param4%/2), 0 - (%param5%/2), %param6%, %param6%, 0, 0, 0, 0 #back wall
+if[%param12% = 1] TextureOverride ElevExt, %param9%MainPanel, ElevExt, ElevExt, ElevExt, ElevExt
+if[%param12% = 1] CreateDoorPanel(0, -%param5%/2 -.2, %param4%, 0, %param6%, %param9%MainPanel, 1.75)
+NotifyEarly = 1
+<EndFunction>
+<Function LoadDouble>
+Load data/%param1%, %param3%, %param4%, %param5%
+Load data/%param2%, %param3%Lit, %param4%, %param5%
+<EndFunction>
+<Function LoadDoor>
+Load data/%param1%, %param2%ElevDoors, 1, 1
+Load data/%param1%, %param2%ElevDoors2, -1, 1
+Load data/%param3%, %param2%GlassDoors, 1, 1
+Load data/%param3%, %param2%GlassDoors2, -1, 1
+<EndFunction>
+<Function ATL>
+LoadDouble(%param1%, %param2%, %param3%, %param4%, %param5%)
+AddTextRange %param6%, %param7%, %param3%, %param3%%param10%, %param8%, %param9%, %param10%, %param11%, %param12%, %param13%, %param14%, %param15%, %param16%, %param17%, %param18%, %param19%
+AddTextRange %param6%, %param7%, %param3%Lit, %param3%Lit%param10%, %param8%, %param9%, %param10%, %param11%, %param12%, %param13%, %param14%, %param15%, %param16%, %param17%, %param18%, %param19%
+<EndFunction>
+<Textures>
+LoadDouble(brick1.jpg, cutston.jpg, Brick, 0.269, 0.25)
+Load data/downtown.jpg, Ground, 1, 1
+LoadDouble(Carpet0013_S.jpg, ceilinglight1.jpg, Floor1, 0.2, 0.2)
+LoadDouble(Carpet0002_S.jpg, ceilinglight1.jpg, Floor2, 0.2, 0.2)
+LoadDouble(floor065.jpg, ceilinglight1.jpg, Floor3, 0.2, 0.2)
+LoadDouble(checker23.jpg, ceilinglight1.jpg, Floor4, 0.2, 0.2)
+LoadDouble(checker21.jpg, ceilinglight1.jpg, Floor5, 0.2, 0.2)
+LoadDouble(windows11.jpg, windows11h_inside.gif, Win1, 0.05, 1)
+LoadDouble(windows11d.jpg, windows11h_inside.gif, Win2, 0.05, 1)
+LoadDouble(windows11g.jpg, windows11h_inside.gif, Win3, 0.05, 1)
+LoadDouble(windows11e.jpg, windows11e_inside.gif, Win4, 0.05, 1)
+LoadDouble(windows08.jpg, windows11e_inside.gif, Win5, 0.05, 1)
+LoadDouble(brick021.jpg, brick021.jpg, Win6, 0.2, 1)
+Load data/marble4.jpg, Wall1, 1, 1
+Load data/marb047.jpg, Wall2, 1, 1
+Load data/brick021.jpg, Wall3, 1, 1
+Load data/black_granite.jpg, Wall4, 1, 1
+Load data/windows11e_inside2.gif, Wall5, 1, 1
+Load data/windows11e_inside3.gif, GlassWall, 1, 1
+Load data/metal1.jpg, ElevExt, 0.25, 0.25
+Load data/panel-back3.jpg, ElevExtPanels, 1, 1
+Load data/glassdoor_trans.gif, ExtGlassDoors, 1, 1
+Load data/glassdoor_trans.gif, ExtGlassDoors2, -1, 1
+Load data/brushed metal door.tga, ExtElevDoors, 1, 1
+Load data/brushed metal door.tga, ExtElevDoors2, -1, 1
+LoadDoor(door1.jpg, MT, glassdoor_trans.gif) # MT
+Load data/MT/BackWall.jpg, MTBackWall, 1, 1
+Load data/MT/CeilingC.jpg, MTCeiling, 1, 1
+Load data/MT/Floor.jpg, MTFloor, 2, 2
+Load data/MT/ElevPanel.jpg, MTMainPanel, 1, 1
+Load data/panel-back2.jpg, MTPanel, 1, 1
+Load data/MT/Open.gif, MTOpen, 1, 1
+Load data/MT/Close.gif, MTClose, 1, 1
+Load data/MT/Alarm.gif, MTAlarm, 1, 1
+Load data/MT/Stop.gif, MTStop, 1, 1
+LoadDouble(MT/upbutton.gif, MT/upbutton_lit.gif, MTButtonUp, 1, 1)
+LoadDouble(MT/downbutton.gif, MT/downbutton_lit.gif, MTButtonDown, 1, 1)
+LoadDouble(MT/LanternUnlit.gif, MT/LanternLit.gif, MTArrowUp, 1, 1)
+LoadDouble(MT/LanternUnlit.gif, MT/LanternLit.gif, MTArrowDown, 1, -1)
+ATL(MT/MT.gif, MT/MTlit.gif, MTButton, 1, 1, %low%, %high%, nimbus_sans_bold.ttf, 48, %number%, 29, 85, 123, 179, center, center, 255, 255, 255)
+LoadDoor(otis67/Otis67_Elevator_aluminium_Door.jpg, VR, glassdoor_trans.gif) # otis VR
+Load data/otis67/Otis67_MetalCabine.jpg, VRBackWall, 1, 1
+Load data/otis67/OTIS67_Elevator_Ceiling_Relefed.jpg, VRCeiling, 1, 1
+Load data/metal072.jpg, VRFloor, 1, 1
+Load data/metal10.jpg, VRMainPanel, 1, 1
+Load data/otis67/OTIS67_OTIS_PANEL_BUTTON_EXTERNAL.jpg, VRPanel, 1, 1
+Load data/otis67/OTIS67_OTIS2_BUTTON_OPEN.gif, VROpen, 1, 1
+Load data/otis67/OTIS67_OTIS2_BUTTON_CLOSE.gif, VRClose, 1, 1
+Load data/otis67/OTIS67_OTIS2_BUTTON_ALARM.gif, VRAlarm, 1, 1
+Load data/otis67/OTIS67_OTIS2_BUTTON_STOP.gif, VRStop, 1, 1
+LoadDouble(callbutton2.gif, callbutton2_litgreen.gif, VRButtonUp, 1, 1)
+LoadDouble(callbutton2.gif, callbutton2_litgreen.gif, VRButtonDown, 1, 1)
+LoadDouble(dcircle_unlit.gif, dcircle_lit.gif, VRArrowUp, 1, 1)
+LoadDouble(dcircle_unlit.gif, dcircle_lit.gif, VRArrowDown, 1, -1)
+ATL(otis67/OTIS67_OTIS2_BUTTON_NOLIGHTblack.gif, otis67/OTIS67_OTIS2_BUTTON_LIGHT.gif, VRButton, 1, 1, %low%, %high%, nimbus_sans_bold_condensed.ttf, 48, %number%, 40, 18, 134, 88, center, center, 255, 255, 255)
+LoadDoor(aluminumdoor.jpg, Otis, glassdoor_trans.gif) # otis non VR
+Load data/otis4_weaveback.jpg, OtisBackWall, 1, 1
+Load data/otis4_weaveceiling_3x3.jpg, OtisCeiling, 1, 1
+Load data/otis4_weavefloor.jpg, OtisFloor, 3, 3
+Load data/otis4_weaveelevpanel.jpg, OtisMainPanel, 1, 1
+Load data/otis4_buttonpanel.jpg, OtisPanel, 1, 1
+Load data/otis67/OTIS67_OTIS_BUTTON_OPEN.gif, OtisOpen, 1, 1
+Load data/otis67/OTIS67_OTIS_BUTTON_CLOSE.gif, OtisClose, 1, 1
+Load data/otis67/OTIS67_OTIS_BUTTON_ALARM.gif, OtisAlarm, 1, 1
+Load data/otis67/OTIS67_OTIS_BUTTON_STOP.gif, OtisStop, 1, 1
+LoadDouble(otis67/OTIS67_OTIS_BUTTON_UP.gif, otis67/OTIS67_OTIS_BUTTON_UP_LIGHTED.gif, OtisButtonUp, 1, 1)
+LoadDouble(otis67/OTIS67_OTIS_BUTTON_DOWN.gif, otis67/OTIS67_OTIS_BUTTON_DOWN_LIGHTED.gif, OtisButtonDown, 1, 1)
+LoadDouble(black.jpg, darrow_single_otis_upgreen.jpg, OtisArrowUp, 1, 1)
+LoadDouble(black.jpg, darrow_single_otis_downgreen.jpg, OtisArrowDown, 1, 1)
+ATL(otis67/OTIS67_OTIS_BUTTON_UNLIGHTED.gif, otis67/OTIS67_OTIS_BUTTON_LIGHTED.gif, OtisButton, 1, 1, %low%, %high%, nimbus_sans_bold_condensed.ttf, 48, %number%, 13, 17, 97, 101, center, center, 255, 255, 255)
+LoadDoor(blackdoor.jpg, Lux, glassdoor_trans.gif) # LUX
+Load data/otis4_woodwall.jpg, LuxBackWall, 1, 1
+Load data/otis4_downlightceiling.jpg, LuxCeiling, 3, 3
+Load data/floor111b.jpg, LuxFloor, 1, 1
+Load data/otis4_woodwallpanel.jpg, LuxMainPanel, 1, 1
+Load data/otis4_buttonpanel.jpg, LuxPanel, 1, 1
+Load data/otis67/OTIS67_Ring_Button_OpenDoor.gif, LuxOpen, 1, 1
+Load data/otis67/OTIS67_Ring_Button_CloseDoor.gif, LuxClose, 1, 1
+Load data/otis67/OTIS67_Ring_Button_Alarm.gif, LuxAlarm, 1, 1
+Load data/otis67/OTIS67_Ring_Button_Stop.gif, LuxStop, 1, 1
+LoadDouble(otis-touch.gif, otis-touchlit.gif, LuxButtonUp, 1, 1)
+LoadDouble(otis-touch.gif, otis-touchlit.gif, LuxButtonDown, 1, -1)
+LoadDouble(otis67/OTIS67_Arrows_UNLIGHTED_UP.gif, otis67/OTIS67_Arrows_LIGHTED_UP.gif, LuxArrowUp, 1, 1)
+LoadDouble(otis67/OTIS67_Arrows_UNLIGHTED_DOWN.gif, otis67/OTIS67_Arrows_LIGHTED_DOWN.gif, LuxArrowDown, 1, 1)
+ATL(black_lit2.jpg, black_lit.jpg, LuxButton, 1, 1, %low%, %high%, nimbus_sans_condensed.ttf, 36, %number%, -1, -1, -1, -1, center, center, 255, 255, 255)
+LoadDoor(otis67/Otis67_Alum_Modern_Door_Relef.gif, SQ, otis67/Otis67_Alum_Modern_Door_GlassRelef.gif) # square
+Load data/otis67/Otis67_Alum_Modern_Elevatorwall.jpg, SQBackWall, 1, 1
+Load data/otis67/OTIS67_Elevator_Ceiling_Relefed.jpg, SQCeiling, 1, 1
+Load data/otis67/Otis67_Alum_Modern_ElevatorFloor.jpg, SQFloor, 1, 1
+Load data/otis67/Otis67_Alum_Modern_Elevatorwall.jpg, SQMainPanel, 1, 1
+Load data/otis67/Otis67_Alum_Modern_Panel.gif, SQPanel, 1, 1
+Load data/otis67/Otis67_Alum_Modern_button_Door open.gif, SQOpen, 1, 1
+Load data/otis67/Otis67_Alum_Modern_button_Door close.gif, SQClose, 1, 1
+Load data/otis67/Otis67_Alum_Modern_button_Alarm2.gif, SQAlarm, 1, 1
+Load data/otis67/Otis67_Alum_Modern_button_Stop.gif, SQStop, 1, 1
+LoadDouble(otis67/Otis67_Alum_Modern_button_UP.gif, otis67/Otis67_Alum_Modern_button_UPLite.gif, SQButtonUp, 1, 1)
+LoadDouble(otis67/Otis67_Alum_Modern_button_Down.gif, otis67/Otis67_Alum_Modern_button_DownLite.gif, SQButtonDown, 1, 1)
+LoadDouble(otis67/Otis67_Alum_Modern_LanternUP.gif, otis67/Otis67_Alum_Modern_LanternUPlight.gif, SQArrowUp, 1, 1)
+LoadDouble(otis67/Otis67_Alum_Modern_LanternDown.gif, otis67/Otis67_Alum_Modern_LanternDownlight.gif, SQArrowDown, 1, 1)
+ATL(otis67/Otis67_Alum_Modern_button_Unlite.gif, otis67/Otis67_Alum_Modern_button_Lite.gif, SQButton, 1, 1, %low%, %high%, nimbus_sans_condensed.ttf, 36, %number%, -1, -1, -1, -1, center, center, 255, 255, 255)
+LoadDoor(otis67/OTIS67_Elevator_Door_Diamont.gif, RU, otis67/Door7.gif) # round
+Load data/otis67/OTIS67_Elevator_Cabine_Dark.jpg, RUBackWall, 1, 1
+Load data/otis67/OTIS67_Elevator_Ceiling_Relefed.jpg, RUCeiling, 1, 1
+Load data/otis67/OTIS67_Elevator_Carpet_OTIS01.jpg, RUFloor, 1, 1
+Load data/otis67/OTIS67_Elevator_Panel_ONLYPANEL.gif, RUMainPanel, 1, 1
+Load data/otis4_buttonpanel.jpg, RUPanel, 1, 1
+Load data/otis67/OTIS67_Ring_Button_OpenDoor.gif, RUOpen, 1, 1
+Load data/otis67/OTIS67_Ring_Button_CloseDoor.gif, RUClose, 1, 1
+Load data/otis67/OTIS67_Ring_Button_Alarm.gif, RUAlarm, 1, 1
+Load data/otis67/OTIS67_Ring_Button_Stop.gif, RUStop, 1, 1
+LoadDouble(otis67/OTIS67_Ring_Button_Call_UP_Unlighted.gif, otis67/OTIS67_Ring_Button_Call_UP_Lighted.gif, RUButtonUp, 1, 1)
+LoadDouble(otis67/OTIS67_Ring_Button_Call_DOWN_Unlighted.gif, otis67/OTIS67_Ring_Button_Call_DOWN_Lighted.gif, RUButtonDown, 1, 1)
+LoadDouble(otis67/OTIS67_Arrows_UNLIGHTED_UP.gif, otis67/OTIS67_Arrows_LIGHTED_UP.gif, RUArrowUp, 1, 1)
+LoadDouble(otis67/OTIS67_Arrows_UNLIGHTED_DOWN.gif, otis67/OTIS67_Arrows_LIGHTED_DOWN.gif, RUArrowDown, 1, 1)
+ATL(otis67/OTIS67_Ring_Button_Unlited.gif, otis67/OTIS67_Ring_Button_Lite.gif, RUButton, 1, 1, %low%, %high%, nimbus_sans_condensed.ttf, 36, %number%, -1, -1, -1, -1, center, center, 0, 0, 0)
+LoadDoor(door2.jpg, DV, glassdoor_trans.gif) # dover
+Load data/MT/treatment01.jpg, DVBackWall, 1, 1
+Load data/MT/CeilingD.jpg, DVCeiling, 1, 1
+Load data/MT/Floor.jpg, DVFloor, 2, 2
+Load data/MT/treatment01.jpg, DVMainPanel, 1, 1
+Load data/MT/panel-back2.gif, DVPanel, 1, 1
+Load data/MT/Open.gif, DVOpen, 1, 1
+Load data/MT/Close.gif, DVClose, 1, 1
+Load data/MT/Alarm.gif, DVAlarm, 1, 1
+Load data/MT/Stop.gif, DVStop, 1, 1
+LoadDouble(callbutton.gif, callbutton_lit.gif, DVButtonUp, 1, 1)
+LoadDouble(callbutton.gif, callbutton_lit.gif, DVButtonDown, 1, -1)
+LoadDouble(doverindicator_unlit.gif, doverindicator_lit.gif, DVArrowUp, 1, 1)
+LoadDouble(doverindicator_unlit.gif, doverindicator_lit.gif, DVArrowDown, 1, -1)
+ATL(black_lit2.jpg, black_lit.jpg, DVButton, 1, 1, %low%, %high%, nimbus_sans_condensed.ttf, 36, %number%, -1, -1, -1, -1, center, center, 255, 255, 255)
+LoadDoor(aluminumdoor.jpg, mit, glassdoor_trans.gif) # mitsubishi
+Load data/marb123.jpg, mitBackWall, 1, 1, true
+Load data/otis4_weaveceiling_3x3.jpg, mitCeiling, 1, 1
+Load data/MT/Floor.jpg, mitFloor, 2, 2
+Load data/marb123.jpg, mitMainPanel, 1, 1, true
+Load data/panel-back3.jpg, mitPanel, 1, 1
+Load data/Mitsubishi ADA/M-ADA-Open.png, mitOpen, 1, 1
+Load data/Mitsubishi ADA/M-ADA-Close.png, mitClose, 1, 1
+Load data/Mitsubishi ADA/M-ADA-Alarm.png, mitAlarm, 1, 1
+Load data/Mitsubishi ADA/M-ADA-Stop.png, mitStop, 1, 1
+Load data/Mitsubishi ADA/M-ADA-Up.png, mitButtonUp, 1, 1
+Load data/Mitsubishi ADA/M-ADA-UpLit.png, mitButtonUpLit, 1, 1
+Load data/Mitsubishi ADA/M-ADA-Down.png, mitButtonDown, 1, 1
+Load data/Mitsubishi ADA/M-ADA-DownLit.png, mitButtonDownLit, 1, 1
+LoadDouble(doverindicator_unlit.gif, doverindicator_lit.gif, mitArrowUp, 1, 1)
+LoadDouble(doverindicator_unlit.gif, doverindicator_lit.gif, mitArrowDown, 1, -1)
+Load data/Mitsubishi ADA/M-ADA-Unlit.png, mitButton, 1, 1
+Load data/Mitsubishi ADA/M-ADA-Lit.png, mitButtonLit, 1, 1
+AddTextRange %low%, %high%, mitButton, mitButton%number%, nimbus_sans_condensed.ttf, 42, %number%, -1, -1, -1, -1, center, center, 0, 0, 0
+AddTextRange %low%, %high%, mitButtonLit, mitButtonLit%number%, nimbus_sans_condensed.ttf, 42, %number%, -1, -1, -1, -1, center, center, 0, 0, 0
+AddText OtisArrowUp, ButtonEZ, nimbus_sans.ttf, 47, EZ, -1, -1, -1, -1, center, center, 255, 255, 255 # inds
+AddText OtisArrowUp, MTIndEZ, nimbus_sans.ttf, 47, EZ, -1, -1, -1, -1, center, center, 255, 127, 0
+AddText OtisArrowUp, VRIndEZ, nimbus_sans.ttf, 47, EZ, -1, -1, -1, -1, center, center, 255, 0, 0
+AddText OtisArrowUp, OtisIndEZ, nimbus_sans.ttf, 47, EZ, -1, -1, -1, -1, center, center, 0, 255, 0
+AddText OtisArrowUp, LuxIndEZ, nimbus_sans.ttf, 47, EZ, -1, -1, -1, -1, center, center, 255, 255, 0
+AddText OtisArrowUp, SQIndEZ, nimbus_sans.ttf, 47, EZ, -1, -1, -1, -1, center, center, 0, 255, 255
+AddText OtisArrowUp, RUIndEZ, nimbus_sans.ttf, 47, EZ, -1, -1, -1, -1, center, center, 255, 127, 0
+AddText OtisArrowUp, DVIndEZ, nimbus_sans.ttf, 47, EZ, -1, -1, -1, -1, center, center, 255, 0, 0
+AddText OtisArrowUp, mitIndEZ, nimbus_sans.ttf, 47, EZ, -1, -1, -1, -1, center, center, 255, 255, 0
+AddTextRange %low%, %high%, OtisArrowUp, Button%number%, nimbus_sans.ttf, 47, %number%, -1, -1, -1, -1, center, center, 255, 255, 255
+AddTextRange %low%, %high%, OtisArrowUp, MTInd%number%, nimbus_sans.ttf, 47, %number%, -1, -1, -1, -1, center, center, 255, 127, 0
+AddTextRange %low%, %high%, OtisArrowUp, VRInd%number%, nimbus_sans.ttf, 47, %number%, -1, -1, -1, -1, center, center, 255, 0, 0
+AddTextRange %low%, %high%, OtisArrowUp, OtisInd%number%, nimbus_sans.ttf, 47, %number%, -1, -1, -1, -1, center, center, 0, 255, 0
+AddTextRange %low%, %high%, OtisArrowUp, LuxInd%number%, nimbus_sans.ttf, 47, %number%, -1, -1, -1, -1, center, center, 255, 255, 0
+AddTextRange %low%, %high%, OtisArrowUp, SQInd%number%, nimbus_sans.ttf, 47, %number%, -1, -1, -1, -1, center, center, 0, 255, 255
+3000
+AddTextRange %low%, %high%, OtisArrowUp, DVInd%number%, nimbus_sans.ttf, 47, %number%, -1, -1, -1, -1, center, center, 255, 0, 0
+AddTextRange %low%, %high%, OtisArrowUp, mitInd%number%, nimbus_sans.ttf, 47, %number%, -1, -1, -1, -1, center, center, 255, 255, 0
+Load data/servicedoor2.jpg, StairsDoor, 1, 1
+Load data/text13.jpg, Stairs, 0.269, 0.25
+Load data/escalator/escalatorstep3z.jpg, step1, 1, -1
+Load data/escalator/escalatorstep3z.jpg, step2, 1, 1
+Load data/escalator/escalatorstep3x.jpg, step3, 1, 1
+Load data/escalator/escalatorstep3x.jpg, step4, -1, 1
+<EndTextures>
+AddGround Ground, Ground, -158400, -158400, 158400, 158400, 0, 7920, 7920
+Cut Landscape, -114, -1, -56, 180, 1, 82, false, true
+<Floor 0>
+ID = %floor%
+Floor = Floor %floor%
+Type = Office
+Height = 35
+InterfloorHeight = 2.24
+Altitude = -2.24
+<EndFloor>
+<Floors 1 to 11>
+ID = %floor%
+Floor = Floor %floor%
+Type = Office
+Height = 35
+InterfloorHeight = 2.24
+<EndFloors>
+<Floor 0>
+BuildRoom(-114, -56, 180, 82, 1, .1, 1)
+CutAll 47, 0, -79, 63, %fullheight%,-39, true, false
+<EndFloor>
+<Floor 1>
+BuildRoom(-112, -56, 176, 84, 1, .1, 1)
+<EndFloor>
+<Floor 2>
+BuildRoom(-112, -54, 172, 84, 1, .1, 1)
+<EndFloor>
+<Floor 3>
+BuildRoom(-114, -54, 172, 82, 1, .1, 1)
+<EndFloor>
+<Floor 4>
+BuildRoom(-114, -52, 172, 82, 1, .1, 1)
+<EndFloor>
+<Floor 5>
+BuildRoom(-118, -52, 174, 82, 1, .1, 1)
+<EndFloor>
+<Floor 6>
+BuildRoom(-118, -52, 174, 82, 1, .1, 1)
+<EndFloor>
+<Floor 7>
+BuildRoom(-118, -52, 176, 84, 1, .1, 1)
+<EndFloor>
+<Floor 8>
+BuildRoom(-120, -52, 176, 82, 1, .1, 1)
+<EndFloor>
+<Floor 9>
+BuildRoom(-120, -52, 176, 82, 1, .1, 1)
+<EndFloor>
+<Floor 10>
+BuildRoom(-118, -50, 174, 82, 1, .1, 1)
+<EndFloor>
+<Floor 11>
+BuildRoom(-118, -50, 172, 82, 1, .1, 1)
+<EndFloor>
+CreateShaft(1, 0, 11, 1, -6, 18, 0.33, 9, 9, 0, 0, 0, 0)
+<Elevator 1>
+ServicedFloors = 0 - 11
+Elevator_Create(0, 0, 0, 7, 7, 8, 1, .2, DV, 8, 1, 1, 1, 0, 3, DVBackWall)
+AddDoors 1, DVElevDoors, DVElevDoors2, .2, 0, 3.69, 3.5, 8, true, 0, 0
+SetShaftDoors 1, 0.2, 0, 3.95
+AddDirectionalIndicator false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 3.5, 3.3, 6, left, 0.5, 1, true, 0, 0
+AddFloorIndicator DVInd, front, 2.525, 2.999, 0.7, 0.5, 6.5
+CreatePanel DVPanel, 5, 4, front, 2.525, 2.999, 0.15, 0.15, 0.3, 0.45, 4, 0, 0
+AddButton 1, switch.wav, DVButton0, DVButtonLit0, 3, 1, 0, 1, 1
+AddButton 1, switch.wav, DVButton1, DVButtonLit1, 3, 2, 1, 1, 1
+AddButton 1, switch.wav, DVButton2, DVButtonLit2, 3, 3, 2, 1, 1
+AddButton 1, switch.wav, DVButton3, DVButtonLit3, 3, 4, 3, 1, 1
+AddButton 1, switch.wav, DVButton4, DVButtonLit4, 2, 1, 4, 1, 1
+AddButton 1, switch.wav, DVButton5, DVButtonLit5, 2, 2, 5, 1, 1
+AddButton 1, switch.wav, DVButton6, DVButtonLit6, 2, 3, 6, 1, 1
+AddButton 1, switch.wav, DVButton7, DVButtonLit7, 2, 4, 7, 1, 1
+AddButton 1, switch.wav, DVButton8, DVButtonLit8, 1, 1, 8, 1, 1
+AddButton 1, switch.wav, DVButton9, DVButtonLit9, 1, 2, 9, 1, 1
+AddButton 1, switch.wav, DVButton10, DVButtonLit10, 1, 3, 10, 1, 1
+AddButton 1, switch.wav, DVButton11, DVButtonLit11, 1, 4, 11, 1, 1
+AddButton 1, switch.wav, DVOpen, DVOpen, 4, 1, open, 1, 1
+AddButton 1, switch.wav, DVClose, DVClose, 4, 4, close, 1, 1
+AddButton 1, switch.wav, DVAlarm, DVAlarm, 5, 1, alarm, 1, 1
+AddButton 1, switch.wav, DVStop, DVStop, 5, 4, stop, 1, 1
+UpChimeSound 1 = chime1-up.wav
+DownChimeSound 1 = chime1-down.wav
+AddDoors 2, DVElevDoors2, DVElevDoors, .2, 0, -3.89, 3.5, 8, true, 0, 0
+SetShaftDoors 2, 0.2, 0, -4.15
+AddDirectionalIndicator false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, -3.5, -3.3, 6, right, 0.5, 1, true, 0, 0
+AddFloorIndicator DVInd, back, -2.525, -2.999, 0.7, 0.5, 6.5
+CreatePanel DVPanel, 5, 4, back, -2.525, -2.999, 0.15, 0.15, 0.3, 0.45, 4, 0, 0
+AddButton 2, switch.wav, DVButton0, DVButtonLit0, 3, 1, 0, 1, 1
+AddButton 2, switch.wav, DVButton1, DVButtonLit1, 3, 2, 1, 1, 1
+AddButton 2, switch.wav, DVButton2, DVButtonLit2, 3, 3, 2, 1, 1
+AddButton 2, switch.wav, DVButton3, DVButtonLit3, 3, 4, 3, 1, 1
+AddButton 2, switch.wav, DVButton4, DVButtonLit4, 2, 1, 4, 1, 1
+AddButton 2, switch.wav, DVButton5, DVButtonLit5, 2, 2, 5, 1, 1
+AddButton 2, switch.wav, DVButton6, DVButtonLit6, 2, 3, 6, 1, 1
+AddButton 2, switch.wav, DVButton7, DVButtonLit7, 2, 4, 7, 1, 1
+AddButton 2, switch.wav, DVButton8, DVButtonLit8, 1, 1, 8, 1, 1
+AddButton 2, switch.wav, DVButton9, DVButtonLit9, 1, 2, 9, 1, 1
+AddButton 2, switch.wav, DVButton10, DVButtonLit10, 1, 3, 10, 1, 1
+AddButton 2, switch.wav, DVButton11, DVButtonLit11, 1, 4, 11, 1, 1
+AddButton 2, switch.wav, DVOpen, DVOpen, 4, 1, open, 1, 1
+AddButton 2, switch.wav, DVClose, DVClose, 4, 4, close, 1, 1
+AddButton 2, switch.wav, DVAlarm, DVAlarm, 5, 1, alarm, 1, 1
+AddButton 2, switch.wav, DVStop, DVStop, 5, 4, stop, 1, 1
+UpChimeSound 2 = chime1-up.wav
+DownChimeSound 2 = chime1-down.wav
+AddDoors 3, DVElevDoors2, DVElevDoors, .2, 3.69, 0, 3.5, 8, false, 0, 0
+SetShaftDoors 3, 0.2, 3.95, 0
+AddDirectionalIndicator false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 3.3, -3.5, 6, back, 0.5, 1, true, 0, 0
+AddFloorIndicator DVInd, left, 2.999, -2.525, 0.7, 0.5, 6.5
+CreatePanel DVPanel, 5, 4, left, 2.999, -2.525, 0.15, 0.15, 0.3, 0.45, 4, 0, 0
+AddButton 3, switch.wav, DVButton0, DVButtonLit0, 3, 1, 0, 1, 1
+AddButton 3, switch.wav, DVButton1, DVButtonLit1, 3, 2, 1, 1, 1
+AddButton 3, switch.wav, DVButton2, DVButtonLit2, 3, 3, 2, 1, 1
+AddButton 3, switch.wav, DVButton3, DVButtonLit3, 3, 4, 3, 1, 1
+AddButton 3, switch.wav, DVButton4, DVButtonLit4, 2, 1, 4, 1, 1
+AddButton 3, switch.wav, DVButton5, DVButtonLit5, 2, 2, 5, 1, 1
+AddButton 3, switch.wav, DVButton6, DVButtonLit6, 2, 3, 6, 1, 1
+AddButton 3, switch.wav, DVButton7, DVButtonLit7, 2, 4, 7, 1, 1
+AddButton 3, switch.wav, DVButton8, DVButtonLit8, 1, 1, 8, 1, 1
+AddButton 3, switch.wav, DVButton9, DVButtonLit9, 1, 2, 9, 1, 1
+AddButton 3, switch.wav, DVButton10, DVButtonLit10, 1, 3, 10, 1, 1
+AddButton 3, switch.wav, DVButton11, DVButtonLit11, 1, 4, 11, 1, 1
+AddButton 3, switch.wav, DVOpen, DVOpen, 4, 1, open, 1, 1
+AddButton 3, switch.wav, DVClose, DVClose, 4, 4, close, 1, 1
+AddButton 3, switch.wav, DVAlarm, DVAlarm, 5, 1, alarm, 1, 1
+AddButton 3, switch.wav, DVStop, DVStop, 5, 4, stop, 1, 1
+UpChimeSound 3 = chime1-up.wav
+DownChimeSound 3 = chime1-down.wav
+BeepSound = silence.wav
+MotorStartSound = motor_start.wav
+MotorRunSound = motor_running.wav
+MotorStopSound = motor_stop.wav
+CarStartSound = elevstart3.wav
+CarMoveSound = elevmove3.wav
+CarStopSound = elevstop3.wav
+CarIdleSound = elevidle.wav
+<EndElevator>
+WallOrientation = left
+SetAutoSize = false, false
+<Floor 0>
+CallButtonElevators = 1
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 3, 4.9, 6, back, 0.5, 1, true, 0, 0 #N
+AddShaftDoor 1, 1, ExtElevDoors2, ExtElevDoors, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -9, 22.9, 4, back, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, -3, -2.1, 6, front, 0.5, 1, true, 0, 0 #S
+AddShaftDoor 1, 2, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -3, 13.1, 4, front, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 4.9, -3, 6, right, 0.5, 1, true, 0, 0 #E
+AddShaftDoor 1, 3, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -1.0999999999999996, 21, 4, right, 0.5, 1, true, 0, 0
+<EndFloor>
+<Floor 1>
+CallButtonElevators = 1
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 3, 4.9, 6, back, 0.5, 1, true, 0, 0 #N
+AddShaftDoor 1, 1, ExtElevDoors2, ExtElevDoors, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -9, 22.9, 4, back, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, -3, -2.1, 6, front, 0.5, 1, true, 0, 0 #S
+AddShaftDoor 1, 2, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -3, 13.1, 4, front, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 4.9, -3, 6, right, 0.5, 1, true, 0, 0 #E
+AddShaftDoor 1, 3, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -1.0999999999999996, 21, 4, right, 0.5, 1, true, 0, 0
+<EndFloor>
+<Floor 2>
+CallButtonElevators = 1
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 3, 4.9, 6, back, 0.5, 1, true, 0, 0 #N
+AddShaftDoor 1, 1, ExtElevDoors2, ExtElevDoors, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -9, 22.9, 4, back, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, -3, -2.1, 6, front, 0.5, 1, true, 0, 0 #S
+AddShaftDoor 1, 2, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -3, 13.1, 4, front, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 4.9, -3, 6, right, 0.5, 1, true, 0, 0 #E
+AddShaftDoor 1, 3, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -1.0999999999999996, 21, 4, right, 0.5, 1, true, 0, 0
+<EndFloor>
+<Floor 3>
+CallButtonElevators = 1
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 3, 4.9, 6, back, 0.5, 1, true, 0, 0 #N
+AddShaftDoor 1, 1, ExtElevDoors2, ExtElevDoors, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -9, 22.9, 4, back, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, -3, -2.1, 6, front, 0.5, 1, true, 0, 0 #S
+AddShaftDoor 1, 2, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -3, 13.1, 4, front, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 4.9, -3, 6, right, 0.5, 1, true, 0, 0 #E
+AddShaftDoor 1, 3, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -1.0999999999999996, 21, 4, right, 0.5, 1, true, 0, 0
+<EndFloor>
+<Floor 4>
+CallButtonElevators = 1
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 3, 4.9, 6, back, 0.5, 1, true, 0, 0 #N
+AddShaftDoor 1, 1, ExtElevDoors2, ExtElevDoors, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -9, 22.9, 4, back, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, -3, -2.1, 6, front, 0.5, 1, true, 0, 0 #S
+AddShaftDoor 1, 2, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -3, 13.1, 4, front, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 4.9, -3, 6, right, 0.5, 1, true, 0, 0 #E
+AddShaftDoor 1, 3, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -1.0999999999999996, 21, 4, right, 0.5, 1, true, 0, 0
+<EndFloor>
+<Floor 5>
+CallButtonElevators = 1
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 3, 4.9, 6, back, 0.5, 1, true, 0, 0 #N
+AddShaftDoor 1, 1, ExtElevDoors2, ExtElevDoors, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -9, 22.9, 4, back, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, -3, -2.1, 6, front, 0.5, 1, true, 0, 0 #S
+AddShaftDoor 1, 2, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -3, 13.1, 4, front, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 4.9, -3, 6, right, 0.5, 1, true, 0, 0 #E
+AddShaftDoor 1, 3, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -1.0999999999999996, 21, 4, right, 0.5, 1, true, 0, 0
+<EndFloor>
+<Floor 6>
+CallButtonElevators = 1
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 3, 4.9, 6, back, 0.5, 1, true, 0, 0 #N
+AddShaftDoor 1, 1, ExtElevDoors2, ExtElevDoors, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -9, 22.9, 4, back, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, -3, -2.1, 6, front, 0.5, 1, true, 0, 0 #S
+AddShaftDoor 1, 2, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -3, 13.1, 4, front, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 4.9, -3, 6, right, 0.5, 1, true, 0, 0 #E
+AddShaftDoor 1, 3, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -1.0999999999999996, 21, 4, right, 0.5, 1, true, 0, 0
+<EndFloor>
+<Floor 7>
+CallButtonElevators = 1
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 3, 4.9, 6, back, 0.5, 1, true, 0, 0 #N
+AddShaftDoor 1, 1, ExtElevDoors2, ExtElevDoors, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -9, 22.9, 4, back, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, -3, -2.1, 6, front, 0.5, 1, true, 0, 0 #S
+AddShaftDoor 1, 2, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -3, 13.1, 4, front, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 4.9, -3, 6, right, 0.5, 1, true, 0, 0 #E
+AddShaftDoor 1, 3, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -1.0999999999999996, 21, 4, right, 0.5, 1, true, 0, 0
+<EndFloor>
+<Floor 8>
+CallButtonElevators = 1
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 3, 4.9, 6, back, 0.5, 1, true, 0, 0 #N
+AddShaftDoor 1, 1, ExtElevDoors2, ExtElevDoors, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -9, 22.9, 4, back, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, -3, -2.1, 6, front, 0.5, 1, true, 0, 0 #S
+AddShaftDoor 1, 2, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -3, 13.1, 4, front, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 4.9, -3, 6, right, 0.5, 1, true, 0, 0 #E
+AddShaftDoor 1, 3, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -1.0999999999999996, 21, 4, right, 0.5, 1, true, 0, 0
+<EndFloor>
+<Floor 9>
+CallButtonElevators = 1
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 3, 4.9, 6, back, 0.5, 1, true, 0, 0 #N
+AddShaftDoor 1, 1, ExtElevDoors2, ExtElevDoors, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -9, 22.9, 4, back, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, -3, -2.1, 6, front, 0.5, 1, true, 0, 0 #S
+AddShaftDoor 1, 2, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -3, 13.1, 4, front, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 4.9, -3, 6, right, 0.5, 1, true, 0, 0 #E
+AddShaftDoor 1, 3, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -1.0999999999999996, 21, 4, right, 0.5, 1, true, 0, 0
+<EndFloor>
+<Floor 10>
+CallButtonElevators = 1
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 3, 4.9, 6, back, 0.5, 1, true, 0, 0 #N
+AddShaftDoor 1, 1, ExtElevDoors2, ExtElevDoors, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -9, 22.9, 4, back, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, -3, -2.1, 6, front, 0.5, 1, true, 0, 0 #S
+AddShaftDoor 1, 2, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -3, 13.1, 4, front, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 4.9, -3, 6, right, 0.5, 1, true, 0, 0 #E
+AddShaftDoor 1, 3, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -1.0999999999999996, 21, 4, right, 0.5, 1, true, 0, 0
+<EndFloor>
+<Floor 11>
+CallButtonElevators = 1
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 3, 4.9, 6, back, 0.5, 1, true, 0, 0 #N
+AddShaftDoor 1, 1, ExtElevDoors2, ExtElevDoors, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -9, 22.9, 4, back, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, -3, -2.1, 6, front, 0.5, 1, true, 0, 0 #S
+AddShaftDoor 1, 2, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -3, 13.1, 4, front, 0.5, 1, true, 0, 0
+AddDirectionalIndicator 1, true, false, false, true, ElevExtPanels, DVArrowUp, DVArrowUpLit, DVArrowDown, DVArrowDownLit, 4.9, -3, 6, right, 0.5, 1, true, 0, 0 #E
+AddShaftDoor 1, 3, ExtElevDoors, ExtElevDoors2, 0, 0
+CreateCallButtons ElevExtPanels, DVButtonUp, DVButtonUpLit, DVButtonDown, DVButtonDownLit, -1.0999999999999996, 21, 4, right, 0.5, 1, true, 0, 0
+<EndFloor>
+#;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1|1;1;1;1;1;1;1;1;1;1;1;1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#NSE|NSE|NSE|NSE|NSE|NSE|NSE|NSE|NSE|NSE|NSE|NSE
+#
+#
+#
+#
+#
+#1
+#N
+#1
+#NSE
+#11
+#7
+#
+#0
+#0 - 11
+#-6
+#18
+#;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1|4;1;1;1;1;1;1;1;1;1;1;1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-114|48;-112;-112;-114;-114;-118;-118;-118;-120;-120;-118;-118;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;180|62;176;172;172;172;174;174;176;176;176;174;172;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-56|-78;-56;-54;-54;-52;-52;-52;-52;-52;-52;-50;-50;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;82|-40;84;84;82;82;82;82;84;82;82;82;82;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1|1;1;1;1;1;1;1;1;1;1;1;1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1|1;1;1;1;1;1;1;1;1;1;1;1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#SBE
